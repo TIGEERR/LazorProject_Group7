@@ -116,5 +116,8 @@ if __name__ == "__main__":
     f = './LazorTemplates/mad_7.bff'
     block_grid, blocks, lazors, end_points = read_setting(f)
     
-    print(block_grid, blocks, lazors, end_points)
+    print(np.shape(block_grid)[0])
+    print(blocks)
+    print(lazors)
+    print(end_points)
     
