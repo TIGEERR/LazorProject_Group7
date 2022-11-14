@@ -6,6 +6,8 @@ Author: Anruo Shen
 
 '''
 
+import numpy as np
+
 def read_setting(f):
     '''
     This function will read in the lazor game setting
@@ -60,10 +62,14 @@ def read_grid(file):
     for row in range(height):
         for col in range(width):
             if copy[row][col] == 'o':
-                block_grid[row][col] = 0
+                block_grid[row][col] = 'o'
+            elif copy[row][col] == 'B':
+                block_grid[row][col] = 'B'
+            elif copy[row][col] == 'x':
+                block_grid[row][col] = 'x'
             else:
-                block_grid[row][col] = 1
-    
+                raise NotImplementedError()
+
     return block_grid
 
 
