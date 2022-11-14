@@ -43,6 +43,7 @@ class Solver():
         pos_blocks =  [i for i in multiset_permutations(block_list+['o']*(len(self.all_PosBlock)-len(block_list)))]
 
         for pos_block in tqdm(pos_blocks):
+            solved_lazor = []
             pos_block = list(zip(pos_block, self.all_PosBlock))
             tmp_grid = self.add_block(pos_block, deepcopy(self.grid))
             lazors = deepcopy(self.lazors)
@@ -72,6 +73,7 @@ class Solver():
                     if (lazor.x, lazor.y) in end_points:
                         end_points.remove((lazor.x, lazor.y))
 
+                solved_lazor.append(lazor)
             ## end
             if len(end_points) == 0:
                 solved = True
@@ -83,7 +85,7 @@ class Solver():
             result_block_type.append((block_type))
             # result_pos.append(((pos[0]-1)//2, (pos[1]-1)//2))
             result_pos.append(((pos[0]-1)//2, (pos[1]-1)//2))
-        return solved, result_block_type, result_pos
+        return solved, result_block_type, result_pos, solved_lazor
                 
 
 def plot_result(Grids, types, pos):
@@ -106,13 +108,16 @@ def main_worker(block_grid, blocks, lazors, end_points):
     Grids = Grid(block_grid)
     lazors = [Lazor(**lazor) for lazor in lazors]
     solver = Solver(Grids, lazors, blocks, end_points)
-    solved, result_block_type, result_pos = solver.solve()
+    solved, result_block_type, result_pos, solved_lazor = solver.solve()
+    print(list(zip(result_block_type, result_pos)))
+    for lazor in solved_lazor:
+        print(lazor)
     if solved:
         plot_result(Grids, result_block_type, result_pos)
     else:
         print('No answer.')
 
 if __name__=="__main__":
-    f = './LazorTemplates/yarn_5.bff'
+    f = './LazorTemplates/mad_1.bff'
     block_grid, blocks, lazors, end_points = read_setting(f)
     main_worker(block_grid, blocks, lazors, end_points)
