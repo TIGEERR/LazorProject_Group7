@@ -6,6 +6,8 @@ Author: Anruo Shen
 
 '''
 
+import numpy as np
+
 def read_setting(f):
     '''
     This function will read in the lazor game setting
@@ -17,9 +19,8 @@ def read_setting(f):
     
     # initialize the data structure
     blocks = {'A':0, 'B':0, 'C':0}
-    lazor_ori = []
-    lazor_dir = []
-    end_point = []
+    lazors = []
+    end_points = []
 
     for line in file:
         if line[0] == 'G':
@@ -27,12 +28,12 @@ def read_setting(f):
         elif line[0] == 'A' or line[0] == 'B' or line[0] =='C':
              blocks = read_blocks(line, blocks)
         elif line[0] == 'L':
-            lazor_ori, lazor_dir = read_lazor(line)
+            lazors.append(read_lazor(line))
         elif line[0] == 'P':
             point = read_endpoint(line)
-            end_point.append(point)
+            end_points.append(point)
         
-    return block_grid, blocks, lazor_ori, lazor_dir, end_point
+    return block_grid, blocks, lazors, end_points
 
 
 def read_grid(file):
@@ -61,10 +62,14 @@ def read_grid(file):
     for row in range(height):
         for col in range(width):
             if copy[row][col] == 'o':
-                block_grid[row][col] = 0
+                block_grid[row][col] = 'o'
+            elif copy[row][col] == 'B':
+                block_grid[row][col] = 'B'
+            elif copy[row][col] == 'x':
+                block_grid[row][col] = 'x'
             else:
-                block_grid[row][col] = 1
-    
+                raise NotImplementedError()
+
     return block_grid
 
 
@@ -90,10 +95,7 @@ def read_lazor(line):
     '''
     # read the lazor information
     line = line.strip().split(' ')
-    lazor_ori = (int(line[1]), int(line[2]))
-    lazor_dir = (int(line[3]), int(line[4]))
-
-    return lazor_ori, lazor_dir
+    return ({'x': int(line[1]), 'y': int(line[2]), 'vx': int(line[3]), 'vy': int(line[4])})
 
 
 def read_endpoint(line):
@@ -112,7 +114,7 @@ def read_endpoint(line):
 
 if __name__ == "__main__":
     f = './LazorTemplates/mad_7.bff'
-    block_grid, blocks, lazor_ori, lazor_dir, end_point = read_setting(f)
+    block_grid, blocks, lazors, end_points = read_setting(f)
     
-    print(block_grid, blocks, lazor_ori, lazor_dir, end_point)
+    print(block_grid, blocks, lazors, end_points)
     
