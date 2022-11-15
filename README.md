@@ -17,11 +17,11 @@ python main.py
 please input the puzzle name: # tiny_5
 ```
 The result will be:
-
+```
 A  B  A  
 o  o  o  
 A  C  o  
-
+```
 # Visualization:
 Reflect Block: Dark  
 Opaque Block: Black  
