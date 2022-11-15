@@ -15,12 +15,17 @@ class Grid():
 
     def __call__(self):
         pos_blocks = []
+        pos_non_blocks = []
         for i in range(len(self.grid)):
             for j in range(len(self.grid[0])):
                 if self.grid[i][j] == 'o' and i % 2 != 0 and j % 2 != 0:
                     ## reverse i and j
                     pos_blocks.append((j, i))
-        return pos_blocks, self.grid
+                elif self.grid[i][j] == 'x' and i % 2 != 0 and j % 2 != 0:
+                    pos_non_blocks.append(('x', (j, i)))
+                elif self.grid[i][j] == 'B' and i % 2 != 0 and j % 2 != 0:
+                    pos_non_blocks.append(('B', (j, i)))
+        return pos_blocks, pos_non_blocks, self.grid
 
 class Lazor():
     def __init__(self, x, y, vx, vy):
