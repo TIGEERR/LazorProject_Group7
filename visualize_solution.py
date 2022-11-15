@@ -25,7 +25,7 @@ class visualize_solution():
         turtle.setup(500, 700)
         turtle.bgcolor("Dimgrey")
         # turtle.bgpic("background.png")
-        turtle.title("Lazors CRACKED！")
+        turtle.title("Lazors CRACKED!")
         turtle.speed(0)
         
         # Set the parameters for the grid
@@ -95,7 +95,7 @@ class visualize_solution():
             turtle.penup()
             turtle.goto(x, y)
             turtle.pendown()
-            turtle.color("white")
+            turtle.color("red")
             turtle.dot()
         
       
@@ -115,7 +115,7 @@ class visualize_solution():
         if type == "A":
             turtle.fillcolor("aliceblue")
         if type == "B":
-            turtle.fillcolor("lightsteelblue")
+            turtle.fillcolor("black")
         if type == "C":
             turtle.fillcolor("slategray")
         if type == "o":
