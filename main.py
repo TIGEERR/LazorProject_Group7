@@ -4,10 +4,12 @@ from visualize_solution import visualizer
 
 
 if __name__=="__main__":
+    # user select the game
     puzzle = input('please input the puzzle name: ')
-
     f = './LazorTemplates/' + puzzle +'.bff'
     print('puzzle name: ', puzzle)
+
+    # start to solve the puzzle
     block_grid, blocks, lazors, end_points = read_setting(f)
     location_key, lazor_path = main_worker(block_grid, blocks, lazors, end_points)
-    solution = visualizer(block_grid, 80, location_key, lazor_path, end_points, lazors)
+    visualizer(block_grid, 80, location_key, lazor_path, end_points, lazors)
