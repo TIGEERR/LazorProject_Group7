@@ -113,11 +113,11 @@ class visualize_solution():
         turtle.pendown()
         turtle.begin_fill()
         if type == "A":
-            turtle.fillcolor("aliceblue")
+            turtle.fillcolor("slategray")
         if type == "B":
             turtle.fillcolor("black")
         if type == "C":
-            turtle.fillcolor("slategray")
+            turtle.fillcolor("aliceblue")
         if type == "o":
             turtle.fillcolor("darkgrey")
         if type == "x":
