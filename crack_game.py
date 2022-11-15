@@ -73,7 +73,7 @@ class Solver():
                     if (lazor.x, lazor.y) in end_points:
                         end_points.remove((lazor.x, lazor.y))
 
-                solved_lazor.append(lazor)
+                solved_lazor.append(lazor.path)
             ## end
             if len(end_points) == 0:
                 solved = True
@@ -113,10 +113,7 @@ def main_worker(block_grid, blocks, lazors, end_points):
         plot_result(Grids, result_block_type, result_pos)
     else:
         print('No answer.')
-    
-    # print block locations
+
     key = (list(zip(result_block_type, result_pos)))
-    # print lazor path
-    for lazor in solved_lazor:
-        print(lazor)
+
     return key, solved_lazor
