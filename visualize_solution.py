@@ -1,3 +1,11 @@
+'''
+This is the file of the Visualizer, which is used to visualize the solution in GUI.
+
+Author: Anruo Shen, Taichi Liu
+
+'''
+
+
 import turtle
 import numpy as np
 

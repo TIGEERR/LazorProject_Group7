@@ -1,3 +1,9 @@
+'''
+This is the file of the Solver, which is the main class of the program.
+
+Author: Anruo Shen, Taichi Liu
+
+'''
 
 from utils import ReflectBlock, RefractBlock, OpaqueBlock, Grid, Lazor
 from copy import deepcopy
@@ -14,12 +20,19 @@ class Solver():
         self.lazors = lazors
         self.blocks = blocks
         self.end_points = end_points
-
+    
+    '''
+    This is the function of add_block, which is used to add the block to the grid.
+    '''
     def add_block(self, pos_block, grid):
         for block_type, pos in pos_block:
             grid[pos[1]][pos[0]]= block_type
         return grid
 
+    '''
+    This is the function of checking the position of the block, which is used to check whether the block is in the grid.
+    If the block is in the grid, then return True, otherwise return False.
+    '''
     def pos_chk(self, lazor):
         if lazor.x+ lazor.vx < 0 or lazor.x+ lazor.vx > len(self.grid[0]) - 1 or lazor.y+ lazor.vy < 0 or lazor.y+ lazor.vy > len(self.grid) - 1:
             return False
@@ -40,16 +53,18 @@ class Solver():
                 block_list.append('C')
 
         print('Prepare possible positions for blocks')
-        # pos_blocks = [''.join(i) for i in multiset_permutations(''.join(block_list)+'o'*(len(self.all_PosBlock)-len(block_list)))]
         pos_blocks =  [i for i in multiset_permutations(block_list+['o']*(len(self.all_PosBlock)-len(block_list)))]
 
+        ## go through all the possible positions of the blocks
         for pos_block in tqdm(pos_blocks):
             solved_lazor = []
             pos_block = list(zip(pos_block, self.all_PosBlock))
             tmp_grid = self.add_block(pos_block, deepcopy(self.grid))
             lazors = deepcopy(self.lazors)
             end_points = deepcopy(self.end_points)
+            ## go through all the lazors
             for lazor in lazors:
+                ## check if the lazor is in the grid / if the lazor is blocked /  if the lazor is in a dead loop
                 while self.pos_chk(lazor) and lazor.blocking == False and lazor.dead == False:
                     if (tmp_grid[lazor.y][lazor.x + lazor.vx] == 'o' or tmp_grid[lazor.y][lazor.x + lazor.vx] == 'x') and (tmp_grid[lazor.y + lazor.vy][lazor.x] == 'o' or tmp_grid[lazor.y + lazor.vy][lazor.x] == 'x'):
                         lazor()
@@ -83,6 +98,7 @@ class Solver():
         result_block_type = []
         result_pos = []
         result_non_PosBlock = []
+        ## get the results of the block types and positions
         for block_type, pos in pos_block:
             result_block_type.append((block_type))
             # result_pos.append(((pos[0]-1)//2, (pos[1]-1)//2))
@@ -91,7 +107,9 @@ class Solver():
             result_non_PosBlock.append((block_type, ((pos[0]-1)//2, (pos[1]-1)//2)))
         return solved, result_block_type, result_pos, solved_lazor, result_non_PosBlock
                 
-
+'''
+This is the function of plotting the solution, which is used to plot the solution of the game.
+'''
 def plot_result(Grids, types, pos):
     block_grid = Grids.block_grid
     for i in range(len(block_grid)):

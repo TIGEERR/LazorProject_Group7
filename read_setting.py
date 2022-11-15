@@ -2,7 +2,7 @@
 This file read in the game setting from .bff file and store
 them in python data structures.
 
-Author: Anruo Shen
+Author: Anruo Shen, Taichi Liu
 
 '''
 
