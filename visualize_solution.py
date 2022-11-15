@@ -63,7 +63,7 @@ class visualize_solution():
                 turtle.end_fill()
                 
                 
-    def visualize_points(self, end_points):
+    def visualize_points(self, end_points, lazor_origin):
         """
         Visualize the end points using turtle graphics
         :param end_points: end points of the lazors
@@ -78,7 +78,19 @@ class visualize_solution():
             turtle.pendown()
             turtle.color("mediumslateblue")
             turtle.dot()
-            
+        
+        # Draw the lazor origin
+        turtle.pensize(10)
+        for i in range(len(lazor_origin)):
+            x = lazor_origin[i]["x"] * self.gridwidth/2 - self.startx
+            y = - lazor_origin[i]["y"] * self.gridwidth/2 + self.starty
+            turtle.penup()
+            turtle.goto(x, y)
+            turtle.pendown()
+            turtle.color("white")
+            turtle.dot()
+        
+      
     def visualize_blocks(self, type, position):
         """
         Visualize the blocks using turtle graphics
@@ -87,6 +99,7 @@ class visualize_solution():
         :return: None
         """
         gridwidth = self.gridwidth
+        
         turtle.penup()
         turtle.goto(position[0] * gridwidth - self.startx, - position[1] * gridwidth + self.starty)
         turtle.pendown()
@@ -115,16 +128,13 @@ class visualize_solution():
         :return: None
         """     
         gridwidth = self.gridwidth/2
+        
         for i in range (len(lazor_path)):
-            lazor_ori = lazor_path[i][0]
-            # Draw the lazor origin
-            x = lazor_ori[0] * gridwidth - self.startx
-            y = - lazor_ori[1] * gridwidth + self.starty
+            x = lazor_path[i][0][0] * self.gridwidth/2 - self.startx
+            y = - lazor_path[i][0][1] * self.gridwidth/2 + self.starty
             turtle.penup()
             turtle.goto(x, y)
             turtle.pendown()
-            turtle.color("white")
-            turtle.dot()
             for j in range (len(lazor_path[i])):
                 if j == len(lazor_path[i]) - 1:
                     break
@@ -146,7 +156,7 @@ class visualize_solution():
                 turtle.pensize(6)
                 turtle.forward(distance)
  
-def visualizer(block_grid, gridwidth, blocks, lazors, end_points):
+def visualizer(block_grid, gridwidth, blocks, lazors, end_points, lazor_origin):
     # Set the parameters for the grid
     solution = visualize_solution(block_grid, gridwidth, blocks, lazors)
     
@@ -157,10 +167,9 @@ def visualizer(block_grid, gridwidth, blocks, lazors, end_points):
     for i in range (len(blocks)):
         solution.visualize_blocks(blocks[i][0], blocks[i][1])
 
-    solution.visualize_points(end_points)
+    solution.visualize_points(end_points, lazor_origin)
     # Visualize the lazor
     solution.visualize_lazor(lazors)
     
     turtle.mainloop()
     
-
