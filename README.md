@@ -10,7 +10,7 @@ Author: Anruo Shen, Taichi Liu
 4. Go thourgh all the combinations to find the solutions.
 5. Visualize the result.
 
-# Useage:
+# Usage:
 ```
 python main.py
 ```
