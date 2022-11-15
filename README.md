@@ -1,5 +1,6 @@
 # LazorProject_Group7
 Codebase for lazor puzzle solver
+Author: Anruo Shen, Taichi Liu
 
 # The ideas of the solution:
 1. Read the .bff file.
