@@ -23,4 +23,7 @@ o  o  o
 A  C  o  
 
 # Visualization:
+ReflectBlock: White
+OpaqueBlock: Black
+RefractBlock: Blue
 <img src="https://github.com/TIGEERR/LazorProject_Group7/blob/main/Figs/visualize_tiny_5.jpg" width=50% height=50%>
