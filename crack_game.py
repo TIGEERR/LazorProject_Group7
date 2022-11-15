@@ -1,3 +1,4 @@
+
 from utils import ReflectBlock, RefractBlock, OpaqueBlock, Grid, Lazor
 from copy import deepcopy
 from tqdm import tqdm
@@ -7,7 +8,7 @@ from sympy.utilities.iterables import multiset_permutations
 class Solver():
 
     def __init__(self, grids, lazors, blocks, end_points):
-        self.all_PosBlock, self.grid = grids()
+        self.all_PosBlock, self.all_nonPosBlock, self.grid = grids()
         self.saved_blocks = set()
 
         self.lazors = lazors
@@ -81,11 +82,14 @@ class Solver():
 
         result_block_type = []
         result_pos = []
+        result_non_PosBlock = []
         for block_type, pos in pos_block:
             result_block_type.append((block_type))
             # result_pos.append(((pos[0]-1)//2, (pos[1]-1)//2))
             result_pos.append(((pos[0]-1)//2, (pos[1]-1)//2))
-        return solved, result_block_type, result_pos, solved_lazor
+        for block_type, pos in self.all_nonPosBlock:
+            result_non_PosBlock.append((block_type, ((pos[0]-1)//2, (pos[1]-1)//2)))
+        return solved, result_block_type, result_pos, solved_lazor, result_non_PosBlock
                 
 
 def plot_result(Grids, types, pos):
@@ -108,12 +112,11 @@ def main_worker(block_grid, blocks, lazors, end_points):
     Grids = Grid(block_grid)
     lazors = [Lazor(**lazor) for lazor in lazors]
     solver = Solver(Grids, lazors, blocks, end_points)
-    solved, result_block_type, result_pos, solved_lazor = solver.solve()
+    solved, result_block_type, result_pos, solved_lazor, pos_non_blocks = solver.solve()
+    all_pos = (list(zip(result_block_type, result_pos))) + pos_non_blocks
     if solved:
         plot_result(Grids, result_block_type, result_pos)
     else:
         print('No answer.')
 
-    key = (list(zip(result_block_type, result_pos)))
-
-    return key, solved_lazor
+    return all_pos, solved_lazor
