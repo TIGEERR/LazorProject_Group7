@@ -1,25 +1,17 @@
 import turtle
 import numpy as np
 
-# def visualizer_solution():
-
-
-class visualization:
-    def __init__(self, length, width, gridwidth):
-        self.length = length
-        self.width = width
+class visualize_solution():
+    def __init__(self, block_grid, gridwidth, blocks, lazors):
+        self.length = np.shape(block_grid)[0]
+        self.width = np.shape(block_grid)[1]
         self.gridwidth = gridwidth
-        self.startx = int(gridwidth * width / 2)
-        self.starty = int(gridwidth * length / 2)
+        self.startx = int(gridwidth * self.width / 2)
+        self.starty = int(gridwidth * self.length / 2)
+        self.blocks = blocks
+        self.lazors = lazors
         
     def visualize_grid(self):
-        """
-        Visualize the grid using turtle graphics
-        :param length: length of the grid
-        :param width: width of the grid
-
-        :return: None
-        """
         turtle.ht()
         # Set up the window and its attributes
         turtle.setup(500, 700)
@@ -70,6 +62,23 @@ class visualization:
                     turtle.fd(block_width)
                 turtle.end_fill()
                 
+                
+    def visualize_points(self, end_points):
+        """
+        Visualize the end points using turtle graphics
+        :param end_points: end points of the lazors
+
+        :return: None
+        """
+        for point in end_points:
+            x = point[0] * self.gridwidth/2 - self.startx
+            y = - point[1] * self.gridwidth/2 + self.starty
+            turtle.penup()
+            turtle.goto(x, y)
+            turtle.pendown()
+            turtle.color("mediumslateblue")
+            turtle.dot()
+            
     def visualize_blocks(self, type, position):
         """
         Visualize the blocks using turtle graphics
@@ -78,7 +87,6 @@ class visualization:
         :return: None
         """
         gridwidth = self.gridwidth
-         
         turtle.penup()
         turtle.goto(position[0] * gridwidth - self.startx, - position[1] * gridwidth + self.starty)
         turtle.pendown()
@@ -89,13 +97,16 @@ class visualization:
             turtle.fillcolor("lightsteelblue")
         if type == "C":
             turtle.fillcolor("slategray")
-            
+        if type == "o":
+            turtle.fillcolor("darkgrey")
+        if type == "x":
+            turtle.fillcolor("DimGrey")
         for z in range(4):
             turtle.fd(gridwidth)
             turtle.left(90)
         turtle.end_fill()
 
-    def visualize_lazor(self, lazor_ori, lazor_dir):
+    def visualize_lazor(self, lazor_path):
         """
         Visualize the lazor using turtle graphics
         :param lazor: lazor object
@@ -104,46 +115,52 @@ class visualization:
         :return: None
         """     
         gridwidth = self.gridwidth/2
-        
-        # Draw the lazor origin
-        x = lazor_ori[0] * gridwidth - self.startx
-        y = - lazor_ori[1] * gridwidth + self.starty
-        turtle.penup()
-        turtle.goto(x, y)
-        turtle.pendown()
-        turtle.color("white")
-        turtle.dot()
-        
-        # Draw the lazor direction
-        if lazor_dir == [1,1]:
-            angle = 45
-        if lazor_dir == [-1, 1]:
-            angle = 135
-        if lazor_dir == [-1, -1]:
-            angle = 225
-        if lazor_dir == [1, -1]:
-            angle = 315
-        turtle.seth(angle)
-        turtle.color("red")
-        turtle.pensize(6)
-        turtle.forward(1000)
+        for i in range (len(lazor_path)):
+            lazor_ori = lazor_path[i][0]
+            # Draw the lazor origin
+            x = lazor_ori[0] * gridwidth - self.startx
+            y = - lazor_ori[1] * gridwidth + self.starty
+            turtle.penup()
+            turtle.goto(x, y)
+            turtle.pendown()
+            turtle.color("white")
+            turtle.dot()
+            for j in range (len(lazor_path[i])):
+                if j == len(lazor_path[i]) - 1:
+                    break
+                lazor_dir = [lazor_path[i][j+1][0] - lazor_path[i][j][0], lazor_path[i][j+1][1] - lazor_path[i][j][1]]
+                distance = np.sqrt(2) * gridwidth
+                if j == len(lazor_path[i]) - 2:
+                    distance = 1000
+                # Draw the lazor direction
+                if lazor_dir == [1,1]:
+                    angle = 315
+                if lazor_dir == [-1, 1]:
+                    angle = 225
+                if lazor_dir == [-1, -1]:
+                    angle = 135
+                if lazor_dir == [1, -1]:
+                    angle = 45
+                turtle.seth(angle)
+                turtle.color("red")
+                turtle.pensize(6)
+                turtle.forward(distance)
  
-
-if __name__ == '__main__':
-
+def visualizer(block_grid, gridwidth, blocks, lazors, end_points):
     # Set the parameters for the grid
-    solution = visualization(5, 3, 80)
+    solution = visualize_solution(block_grid, gridwidth, blocks, lazors)
     
     # Visualize the grid
     solution.visualize_grid()
+    
     # Visualize the blocks
- 
-    solution.visualize_blocks("A", [0,1])
-    solution.visualize_blocks("A", [2,2])
-    solution.visualize_blocks("A", [0,3])
-    solution.visualize_blocks("A", [2,4])
+    for i in range (len(blocks)):
+        solution.visualize_blocks(blocks[i][0], blocks[i][1])
 
+    solution.visualize_points(end_points)
     # Visualize the lazor
-    solution.visualize_lazor([4,1], [-1,-1])
+    solution.visualize_lazor(lazors)
     
     turtle.mainloop()
+    
+
